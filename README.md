@@ -1,7 +1,7 @@
 # EmotionAnalysis
 
 This repository contains codes of various machine learning approaches for text classification. 
-For text classification task, ISEAR (International Survey on Emotion Antecedents and Reactions) [Dataset] (https://github.com/sinmaniphel/py_isear_dataset) is used,
+For text classification task, ISEAR (International Survey on Emotion Antecedents and Reactions) (Dataset) [https://github.com/sinmaniphel/py_isear_dataset] is used,
 which comprises of 7566 sentences and seven emotion categories including : Anger, Disgust, Fear, Guilt, Joy, Sadness, Shame.
 While comparing different algorithms, LSTM turned out to be most effective.
 
