@@ -41,7 +41,7 @@ print(dataDF.head())
 print("total examples %s" % len(labels))
 
 # split the dataset into training and test datasets 
-train_x, test_x, train_y, test_y = train_test_split(dataDF['text'], dataDF['label'], random_state = 24)
+train_x, test_x, train_y, test_y = train_test_split(dataDF['text'], dataDF['label'], random_state = 24, test_size = 0.2)
 
 # label encode the target variable 
 encoder = LabelEncoder()
