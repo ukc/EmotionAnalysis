@@ -15,14 +15,6 @@ from keras.layers.embeddings import Embedding
 import os
 import pickle
 
-def train_model(classifier, feature_vector_train, train_label, feature_vector_test, test_label):
-    # fit the training dataset on the classifier
-    classifier.fit(feature_vector_train, train_label)
-    # predict the labels on test dataset
-    predictions = classifier.predict(feature_vector_test)
-    #print(classification_report(test_label, predictions))
-    return accuracy_score(predictions, test_label)
-
 
 def loadGloveModel(gloveFile):
     glove_model = {} 
