@@ -19,7 +19,7 @@ import pickle
 
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import RandomizedSearchCV
-
+from keras.models import load_model
 
 def loadGloveModel(gloveFile):
     glove_model = {} 
@@ -118,7 +118,7 @@ def create_model(num_filters, kernel_size, vocab_size, embedding_dim, maxlen):
     return model
 
 
-model = create_model(64, 5, vocab_size, 300, maxlen)
+model = create_model(128, 5, vocab_size, 300, maxlen)
 
 checkpoint_callback = ModelCheckpoint('emotional_cnn.h5', monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 early_stopping = EarlyStopping(monitor='val_acc',
@@ -134,7 +134,7 @@ early_stopping = EarlyStopping(monitor='val_acc',
 
 
 model = KerasClassifier(build_fn=create_model,
-                        epochs=100, batch_size=128,
+                        epochs=200, batch_size=128,
                         verbose=2) 
 
 grid = RandomizedSearchCV(estimator=model, param_distributions=param_grid, cv=4, verbose=1, n_iter=5)

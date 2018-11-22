@@ -17,6 +17,7 @@ import pickle
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import RandomizedSearchCV
+from keras.models import load_model
 
 
 def loadGloveModel(gloveFile):
@@ -109,7 +110,7 @@ def create_model(vocab_size, embedding_dim, maxlen, dropout_val):
 		                       input_length=maxlen, 
 		                       trainable=False))
 	#model.add(layers.Embedding(vocab_size, embedding_dim, input_length=maxlen))
-	model.add(LSTM(100, recurrent_dropout=dropout_val))
+	model.add(LSTM(100, dropout= dropout_val, recurrent_dropout=dropout_val))
 	#model.add(layers.Dense(10, activation='relu'))
 	model.add(Dense(7, activation='softmax'))
 	model.compile(optimizer='adam',
@@ -118,49 +119,14 @@ def create_model(vocab_size, embedding_dim, maxlen, dropout_val):
 	return model
 
 
-model = create_model(vocab_size, 300, maxlen, 0.4)
-#model.summary()
 
-'''param_grid = dict(vocab_size=[vocab_size], 
-                  embedding_dim=[300, 150, 100],
-                  maxlen=[maxlen],
-				  dropout_val = [0.2,0.4,0.6])'''
+model = load_model('emotional_rnnf.h5')
 
-checkpoint_callback = ModelCheckpoint('emotional_rnn.h5', monitor='val_acc', verbose=1, save_best_only=True, mode='max')
-early_stopping = EarlyStopping(monitor='val_acc',
-                              min_delta=0,
-                              patience=100,
-                              verbose=0, mode='auto')
-
-
-'''model = KerasClassifier(build_fn=create_model,
-                        epochs=100, batch_size=128,
-                        verbose=2) 
-
-grid = RandomizedSearchCV(estimator=model, param_distributions=param_grid, cv=4, verbose=1, n_iter=5)
-grid_result = grid.fit(X_train, y_train)
-
-# Evaluate testing set
-test_accuracy = grid.score(X_test, y_test)
-
-
-with open('LSTM_grid_search.txt' , 'w') as f:
-    s = ('Best Accuracy : {:.4f}\n {}\n Test Accuracy : {:.4f}\n')
-    output_string = s.format( grid_result.best_score_, grid_result.best_params_, test_accuracy)
-    print(output_string)
-    f.write(output_string)'''
-
-
-history = model.fit(X_train, y_train,
-                    epochs= 100,
-                    verbose= 2,
-                    validation_data=(X_test, y_test),
-                    batch_size= 128, callbacks = [checkpoint_callback])
-
-loss, accuracy = model.evaluate(X_train, y_train, verbose=False)
-print("Training Accuracy: {:.4f}".format(accuracy))
 loss, accuracy = model.evaluate(X_test, y_test, verbose=False)
 print("Testing Accuracy:  {:.4f}".format(accuracy))
+
+
+
 
 
 
